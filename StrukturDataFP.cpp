@@ -133,8 +133,9 @@ namespace LogicLayer {
         ofstream file("Laporan_MoneyMate.csv");
         if (!file.is_open()) return false;
 
-        // Header CSV disesuaikan (tanpa Deskripsi)
-        file << "ID,Tanggal,Kategori,Pemasukan,Pengeluaran,Sisa Saldo\n";
+        file << "sep=;\n";
+
+        file << "ID;Tanggal;Kategori;Pemasukan;Pengeluaran;Sisa Saldo\n";
 
         double runningSaldo = 0;
         for (const auto& t : bukuKas) {
@@ -142,13 +143,16 @@ namespace LogicLayer {
             double keluar = (t.tipe == "Pengeluaran") ? t.nominal : 0;
             runningSaldo += (masuk - keluar);
 
-            file << t.id << ","
-                << t.tanggal << ","
-                << t.kategori << ","
-                << fixed << setprecision(0) << masuk << ","
-                << keluar << ","
-                << runningSaldo << "\n";
+            file << t.id << ";"
+                << t.tanggal << ";"
+                << t.kategori << ";"
+                << "Rp " << fixed << setprecision(0) << masuk << ";"
+                << "Rp " << keluar << ";"
+                << "Rp " << runningSaldo << "\n";
         }
+
+        file << ";;;;\n";
+        file << ";;;;Total Saldo Akhir:;Rp " << fixed << setprecision(0) << saldoSistem << "\n";
 
         file.close();
         return true;
@@ -166,7 +170,7 @@ namespace UILayer {
         while (true) {
             system("cls");
             cout << "=================================\n";
-            cout << "          HALAMAN LOGIN     \n";
+            cout << "          HALAMAN LOGIN      \n";
             cout << "=================================\n";
             cout << "1. Buat PIN / Masuk Sistem\n";
             cout << "2. Reset PIN (Hapus Data)\n";
@@ -196,7 +200,7 @@ namespace UILayer {
                 cout << "=================================\n";
 
                 int percobaan = 0;
-                while (percobaan < 3) {
+                while (percobaan < 2) {
                     cout << "Masukkan PIN Keamanan: ";
                     cin >> pinInput;
 
@@ -206,7 +210,7 @@ namespace UILayer {
                     }
                     else {
                         percobaan++;
-                        cout << ">> SALAH WOI! (" << percobaan << "/3)\n";
+                        cout << ">> SALAH WOI! (" << percobaan << "/2)\n";
                     }
                 }
 
@@ -216,7 +220,7 @@ namespace UILayer {
             else if (menuAwal == 2) {
                 system("cls");
                 cout << "=================================\n";
-                cout << "           RESET PIN        \n";
+                cout << "           RESET PIN         \n";
                 cout << "=================================\n";
                 if (hapusDataPIN()) {
                     cout << "\n[SISTEM] Sukses! Data PIN telah dihancurkan.\n";
@@ -251,8 +255,28 @@ namespace UILayer {
 
         cout << "Tanggal (DD-MM-YYYY) : "; cin >> tgl;
 
-        cin.ignore();
-        cout << "Kategori             : "; getline(cin, kat);
+        if (pilihanTipe == 1) {
+            int pilKat;
+            cout << "\n--- Pilih Kategori Pemasukan ---\n";
+            cout << "1. Gaji\n";
+            cout << "2. Side Job\n";
+            cout << "3. Orang Tua\n";
+            cout << "4. Investasi\n";
+            cout << "Pilih Kategori (1-4): "; cin >> pilKat;
+
+            switch (pilKat) {
+            case 1: kat = "Gaji"; break;
+            case 2: kat = "Side Job"; break;
+            case 3: kat = "Orang Tua"; break;
+            case 4: kat = "Investasi"; break;
+            default: kat = "Lainnya"; break;
+            }
+            cout << "--------------------------------\n";
+        }
+        else {
+            cin.ignore();
+            cout << "Kategori             : "; getline(cin, kat);
+        }
 
         cout << "Nominal (Rp)         : "; cin >> nom;
 
@@ -366,7 +390,7 @@ namespace UILayer {
                 cout << ">> Buka file 'Laporan_MoneyMate.csv' langsung pakai Microsoft Excel.\n";
             }
             else {
-                cout << "\n>> Terjadi kesalahan saat mengekspor CSV!\n";
+                cout << "\n>> Gagal mengekspor! Pastikan file Excel sedang DITUTUP sebelum di-ekspor.\n";
             }
         }
         else {
