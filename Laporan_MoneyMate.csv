@@ -1,0 +1,6 @@
+sep=;
+ID;Tanggal;Kategori;Pemasukan;Pengeluaran;Sisa Saldo
+1;01-01-2026;Gaji;Rp 5900000;Rp 0;Rp 5900000
+2;01-01-2026;Bensin;Rp 0;Rp 100000;Rp 5800000
+;;;;
+;;;;Total Saldo Akhir:;Rp 5800000
