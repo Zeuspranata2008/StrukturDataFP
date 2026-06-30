@@ -280,9 +280,6 @@ namespace UILayer {
                     cout << "=================================\n";
                     cout << "        BUAT AKUN    \n";
                     cout << "=================================\n";
-                    cout << "Masukkan Nama Akun Anda: ";
-                    cin.ignore();
-                    getline(cin, namaUser);
                     cout << "Masukkan 4 Digit PIN baru: ";
                     cin >> pinInput;
                     createPin(pinInput);
