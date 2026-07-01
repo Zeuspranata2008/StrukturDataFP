@@ -444,7 +444,7 @@ namespace UILayer {
         cout << "        HAPUS & UNDO DATA        \n";
         cout << "=================================\n";
         cout << "1. Hapus Transaksi (Delete Saldo)\n";
-        cout << "2. Batal Hapus / Undo (Stack)\n";
+        cout << "2. Batal Hapus / Undo\n";
         cout << "Pilih: "; cin >> opsi;
 
         if (opsi == 1) {
